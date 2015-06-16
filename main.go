@@ -1,21 +1,38 @@
 package main
 
 import (
-	"flag"
-	"fmt"
-	"github.com/garyburd/redigo/redis"
+	"adexchange/lib"
+	"adexchange/tasks"
+	"github.com/astaxie/beego"
 )
 
+//func main() {
+//	flag.Parse()
+//	pool = newPool(*redisServer, *redisPassword)
+
+//	c := pool.Get()
+//	for {
+//		rstMap, _ := redis.StringMap(c.Do("brpop", "ADMUX_IMP", "0"))
+//		fmt.Printf(rstMap["ADMUX_IMP"])
+
+//	}
+
+//	defer c.Close()
+
+//}
+
+//func test() {
+//	b, err := msgpack.Marshal("test")
+//	beego.Debug(b)
+//	if err == nil {
+//		c := pool.Get()
+//		c.Do("lpush", "ADMUX_IMP", b)
+
+//		defer c.Close()
+//	}
+//}
+
 func main() {
-	flag.Parse()
-	pool = newPool(*redisServer, *redisPassword)
-	c := pool.Get()
-	for {
-		rstMap, _ := redis.StringMap(c.Do("brpop", "ADMUX_LOG", "0"))
-		fmt.Printf(rstMap["ADMUX_LOG"])
-
-	}
-
-	defer c.Close()
-
+	lib.Pool = lib.NewPool(beego.AppConfig.String("redis_server"), "")
+	tasks.HandleImp()
 }
