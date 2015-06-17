@@ -2,7 +2,7 @@ package main
 
 import (
 	"adexchange/lib"
-	"adexchange/tasks"
+	"adprocess/handlers"
 	"github.com/astaxie/beego"
 )
 
@@ -34,5 +34,5 @@ import (
 
 func main() {
 	lib.Pool = lib.NewPool(beego.AppConfig.String("redis_server"), "")
-	tasks.HandleImp()
+	handlers.HandleImp()
 }
