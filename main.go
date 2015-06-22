@@ -2,8 +2,13 @@ package main
 
 import (
 	"adexchange/lib"
+	m "adexchange/models"
+	"adexchange/tools"
+	//"adprocess/tasks"
 	"adprocess/handlers"
+	//adpm "adprocess/models"
 	"github.com/astaxie/beego"
+	"github.com/astaxie/beego/orm"
 )
 
 //func main() {
@@ -33,6 +38,20 @@ import (
 //}
 
 func main() {
+
+	beego.SetLogger("file", `{"filename":"logs/adprocess.log"}`)
+	beego.SetLogFuncCall(true)
+	orm.Debug, _ = beego.AppConfig.Bool("orm_debug")
+
 	lib.Pool = lib.NewPool(beego.AppConfig.String("redis_server"), "")
-	handlers.HandleImp()
+	tools.Init("ip.dat")
+	m.Connect()
+
+	//tasks.DailyReportInit(30)
+	go handlers.HandleImp()
+}
+
+func test() {
+	beego.Debug("test")
+
 }
