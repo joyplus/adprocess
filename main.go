@@ -9,6 +9,7 @@ import (
 	//adpm "adprocess/models"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
+	"sync"
 )
 
 //func main() {
@@ -39,6 +40,9 @@ import (
 
 func main() {
 
+	var w sync.WaitGroup
+	w.Add(1)
+	beego.Debug("Start adprocess")
 	beego.SetLogger("file", `{"filename":"logs/adprocess.log"}`)
 	beego.SetLogFuncCall(true)
 	orm.Debug, _ = beego.AppConfig.Bool("orm_debug")
@@ -48,7 +52,9 @@ func main() {
 	m.Connect()
 
 	//tasks.DailyReportInit(30)
-	go handlers.HandleImp()
+	go handlers.HandleReq()
+
+	w.Wait()
 }
 
 func test() {

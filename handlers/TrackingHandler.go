@@ -11,6 +11,37 @@ import (
 	"time"
 )
 
+func HandleReq() {
+
+	c := lib.Pool.Get()
+	for {
+		reply, err := c.Do("brpop", "ADMUX_REQ", "0")
+
+		if err != nil {
+			beego.Error(err.Error())
+			continue
+		}
+
+		switch reply := reply.(type) {
+		case []interface{}:
+			b, _ := redis.Bytes(reply[1], nil)
+			dealRequestLog(b)
+			break
+		case nil:
+
+			beego.Debug("ADMUX_REQ Connection timeout")
+			break
+		default:
+			beego.Debug("ADMUX_REQ Unknow reply:")
+			beego.Debug(reply)
+			break
+		}
+
+	}
+
+	defer c.Close()
+}
+
 func HandleImp() {
 
 	c := lib.Pool.Get()
@@ -25,7 +56,7 @@ func HandleImp() {
 		switch reply := reply.(type) {
 		case []interface{}:
 			b, _ := redis.Bytes(reply[1], nil)
-			dealTrackingRequest(b)
+			dealTrackingLog(b, 2)
 			break
 		case nil:
 
@@ -42,25 +73,90 @@ func HandleImp() {
 	defer c.Close()
 }
 
-func dealTrackingRequest(b []byte) {
+func HandleClk() {
+
+	c := lib.Pool.Get()
+	for {
+		reply, err := c.Do("brpop", "ADMUX_CLK", "0")
+
+		if err != nil {
+			beego.Error(err.Error())
+			continue
+		}
+
+		switch reply := reply.(type) {
+		case []interface{}:
+			b, _ := redis.Bytes(reply[1], nil)
+			dealTrackingLog(b, 3)
+			break
+		case nil:
+
+			beego.Debug("ADMUX_CLK Connection timeout")
+			break
+		default:
+			beego.Debug("ADMUX_CLK Unknow reply:")
+			beego.Debug(reply)
+			break
+		}
+
+	}
+
+	defer c.Close()
+}
+
+func dealRequestLog(b []byte) {
 	var adRequest adxm.AdRequest
 	err := msgpack.Unmarshal(b, &adRequest)
 	if err != nil {
 		beego.Error(err.Error())
 	} else {
-		adpm.AddPmpTrackingLog(getTrackingLog(&adRequest))
+		adpm.AddPmpRequestLog(getRequestLog(&adRequest))
 	}
 
 }
 
-func getTrackingLog(adRequest *adxm.AdRequest) *adpm.PmpTrackingLog {
+func dealTrackingLog(b []byte, logType int) {
+	var adRequest adxm.AdRequest
+	err := msgpack.Unmarshal(b, &adRequest)
+	if err != nil {
+		beego.Error(err.Error())
+	} else {
+		adpm.AddPmpTrackingLog(getTrackingLog(&adRequest, logType))
+	}
+
+}
+
+func getRequestLog(adRequest *adxm.AdRequest) *adpm.PmpRequestLog {
+
+	requestLog := new(adpm.PmpRequestLog)
+	requestLog.AdDate = time.Now().Format("2006-01-02")
+	requestLog.RequestTime = time.Now()
+
+	requestLog.Bid = adRequest.Bid
+	requestLog.StatusCode = adRequest.StatusCode
+	requestLog.Os = adRequest.Os
+	requestLog.Pkgname = adRequest.Pkgname
+	idType, uid := getIdTypeAndUid(adRequest)
+	requestLog.IdType = idType
+	requestLog.Uid = uid
+	requestLog.Ip = adRequest.Ip
+
+	provinceCode, cityCode := tools.QueryIP(adRequest.Ip)
+	requestLog.ProvinceCode = provinceCode
+	requestLog.CityCode = cityCode
+	requestLog.PmpAdspaceId = adpm.GetPmpAdspaceId(adRequest.AdspaceKey)
+
+	return requestLog
+}
+
+func getTrackingLog(adRequest *adxm.AdRequest, logType int) *adpm.PmpTrackingLog {
 
 	trackingLog := new(adpm.PmpTrackingLog)
 	trackingLog.AdDate = time.Now().Format("2006-01-02")
 	trackingLog.RequestTime = time.Now()
 
 	trackingLog.Bid = adRequest.Bid
-	trackingLog.LogType = 2
+	trackingLog.LogType = logType
 	trackingLog.Os = adRequest.Os
 	trackingLog.Pkgname = adRequest.Pkgname
 	idType, uid := getIdTypeAndUid(adRequest)
@@ -81,6 +177,7 @@ func getTrackingLog(adRequest *adxm.AdRequest) *adpm.PmpTrackingLog {
 //1:iOS
 //2:Windows Phone
 //3:Others
+
 //0:imei
 //1:wma, 终端网卡的 MAC 地址去除冒号分隔符保持大 写
 //2:aid android id

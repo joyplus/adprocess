@@ -14,6 +14,13 @@ func AddPmpTrackingLog(m *PmpTrackingLog) (err error) {
 	return err
 }
 
+func AddPmpRequestLog(m *PmpRequestLog) (err error) {
+
+	o := orm.NewOrm()
+	_, err = o.Insert(m)
+	return err
+}
+
 func GetPmpAdspaceId(pmpAdspaceKey string) (id int) {
 
 	c := lib.Pool.Get()

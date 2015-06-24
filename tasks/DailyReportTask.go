@@ -9,7 +9,7 @@ import (
 )
 
 func DailyReportInit(minutes int) {
-	timer := time.NewTicker(time.Second * time.Duration(minutes))
+	timer := time.NewTicker(time.Minutes * time.Duration(minutes))
 	for {
 		select {
 		case <-timer.C:
