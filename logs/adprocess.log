@@ -399,3 +399,5 @@
 2015/06/21 23:12:57 [ReportDao.go:13] [D] Start update report 
 2015/06/21 23:13:02 [DailyReportTask.go:16] [D] 
 2015/06/21 23:13:02 [ReportDao.go:13] [D] Start update report 
+2015/06/25 10:54:45 [TrackingHandler.go:133] [D] 2015-06-25 10:54:45.037364175 +0800 CST 
+2015/06/25 10:56:20 [TrackingHandler.go:133] [D] 2015-06-25 10:56:19.721452429 +0800 CST 

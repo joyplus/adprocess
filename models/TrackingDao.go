@@ -30,7 +30,7 @@ func GetPmpAdspaceId(pmpAdspaceKey string) (id int) {
 	}
 
 	o := orm.NewOrm()
-	pmpAdspace := PmpAdplace{PmpAdspaceKey: pmpAdspaceKey}
+	pmpAdspace := PmpAdspace{PmpAdspaceKey: pmpAdspaceKey}
 
 	err = o.Read(&pmpAdspace, "PmpAdspaceKey")
 

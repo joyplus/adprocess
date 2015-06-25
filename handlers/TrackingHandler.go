@@ -129,9 +129,10 @@ func dealTrackingLog(b []byte, logType int) {
 func getRequestLog(adRequest *adxm.AdRequest) *adpm.PmpRequestLog {
 
 	requestLog := new(adpm.PmpRequestLog)
-	requestLog.AdDate = time.Now().Format("2006-01-02")
-	requestLog.RequestTime = time.Now()
 
+	requestLog.RequestTime = time.Unix(adRequest.RequestTime, 0).Format("2006-01-02 15:04:05")
+
+	requestLog.AdDate = time.Unix(adRequest.RequestTime, 0).Format("2006-01-02")
 	requestLog.Bid = adRequest.Bid
 	requestLog.StatusCode = adRequest.StatusCode
 	requestLog.Os = adRequest.Os
@@ -152,8 +153,8 @@ func getRequestLog(adRequest *adxm.AdRequest) *adpm.PmpRequestLog {
 func getTrackingLog(adRequest *adxm.AdRequest, logType int) *adpm.PmpTrackingLog {
 
 	trackingLog := new(adpm.PmpTrackingLog)
-	trackingLog.AdDate = time.Now().Format("2006-01-02")
-	trackingLog.RequestTime = time.Now()
+	trackingLog.RequestTime = time.Unix(adRequest.RequestTime, 0).Format("2006-01-02 15:04:05")
+	trackingLog.AdDate = time.Unix(adRequest.RequestTime, 0).Format("2006-01-02")
 
 	trackingLog.Bid = adRequest.Bid
 	trackingLog.LogType = logType
