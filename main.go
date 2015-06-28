@@ -4,8 +4,8 @@ import (
 	"adexchange/lib"
 	m "adexchange/models"
 	"adexchange/tools"
-	//"adprocess/tasks"
 	"adprocess/handlers"
+	"adprocess/tasks"
 	//adpm "adprocess/models"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
@@ -51,13 +51,12 @@ func main() {
 	tools.Init("ip.dat")
 	m.Connect()
 
-	//tasks.DailyReportInit(30)
 	go handlers.HandleReq()
+	go handlers.HandleImp()
+	go handlers.HandleClk()
+	go handlers.HandleDemandLog()
+	go tasks.DailyDemandReportInit(5)
+	go tasks.DailyReportInit(5)
 
 	w.Wait()
-}
-
-func test() {
-	beego.Debug("test")
-
 }
