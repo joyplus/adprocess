@@ -111,6 +111,9 @@ func dealRequestLog(b []byte) {
 		beego.Error(err.Error())
 	} else {
 		adpm.AddPmpRequestLog(getRequestLog(&adRequest))
+		if err != nil {
+			beego.Error(err.Error())
+		}
 	}
 
 }
@@ -121,7 +124,10 @@ func dealTrackingLog(b []byte, logType int) {
 	if err != nil {
 		beego.Error(err.Error())
 	} else {
-		adpm.AddPmpTrackingLog(getTrackingLog(&adRequest, logType))
+		err := adpm.AddPmpTrackingLog(getTrackingLog(&adRequest, logType))
+		if err != nil {
+			beego.Error(err.Error())
+		}
 	}
 
 }

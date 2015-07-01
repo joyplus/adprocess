@@ -28,3 +28,7 @@ adprocess
 adprocess
 
 *.log
+
+/logs
+
+*.log

@@ -55,8 +55,9 @@ func main() {
 	go handlers.HandleImp()
 	go handlers.HandleClk()
 	go handlers.HandleDemandLog()
-	go tasks.DailyDemandReportInit(5)
-	go tasks.DailyReportInit(5)
+	go tasks.DailyDemandReportInit(1)
+	go tasks.DailyReportInit(1)
+	go tasks.LastDayReportInit()
 
 	w.Wait()
 }
