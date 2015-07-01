@@ -30,7 +30,6 @@ func AddPmpRequestLog(m *PmpRequestLog) (err error) {
 
 func GetPmpAdspaceId(pmpAdspaceKey string) (id int) {
 
-	c := lib.Pool.Get()
 	id = GetCachedId("PMP_ADSPACE_" + pmpAdspaceKey)
 	if id != 0 {
 		return id
@@ -39,7 +38,7 @@ func GetPmpAdspaceId(pmpAdspaceKey string) (id int) {
 	o := orm.NewOrm()
 	pmpAdspace := PmpAdspace{PmpAdspaceKey: pmpAdspaceKey}
 
-	err = o.Read(&pmpAdspace, "PmpAdspaceKey")
+	err := o.Read(&pmpAdspace, "PmpAdspaceKey")
 
 	if err == nil {
 		id = pmpAdspace.Id
@@ -62,7 +61,7 @@ func GetDemandAdspaceId(adspaceKey string) (id int) {
 	o := orm.NewOrm()
 	pmpDemandAdspace := PmpDemandAdspace{DemandAdspaceKey: adspaceKey}
 
-	err = o.Read(&pmpDemandAdspace, "DemandAdspaceKey")
+	err := o.Read(&pmpDemandAdspace, "DemandAdspaceKey")
 
 	if err == nil {
 		id = pmpDemandAdspace.Id
@@ -76,11 +75,11 @@ func SetCachedId(key string, id int) {
 	c := lib.Pool.Get()
 	prefix := beego.AppConfig.String("runmode") + "_"
 
-	if _, err = c.Do("SET", prefix+key, id); err != nil {
+	if _, err := c.Do("SET", prefix+key, id); err != nil {
 		beego.Error(err.Error())
 	}
 
-	_, err = c.Do("EXPIRE", prefix+key, 86400)
+	_, err := c.Do("EXPIRE", prefix+key, 86400)
 	if err != nil {
 		beego.Error(err.Error())
 	}
