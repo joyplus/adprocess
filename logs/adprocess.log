@@ -401,3 +401,30 @@
 2015/06/21 23:13:02 [ReportDao.go:13] [D] Start update report 
 2015/06/25 10:54:45 [TrackingHandler.go:133] [D] 2015-06-25 10:54:45.037364175 +0800 CST 
 2015/06/25 10:56:20 [TrackingHandler.go:133] [D] 2015-06-25 10:56:19.721452429 +0800 CST 
+2015/06/28 00:20:40 [DemandLogHandler.go:59] [D] 0 
+2015/06/28 00:20:40 [DemandLogHandler.go:59] [D] 0 
+2015/06/28 16:53:30 [main.go:45] [D] Start adprocess 
+2015/06/28 16:54:56 [main.go:45] [D] Start adprocess 
+2015/06/28 16:55:04 [main.go:45] [D] Start adprocess 
+2015/06/28 16:57:44 [ReportDao.go:13] [D] Start update daily report 
+2015/06/28 16:57:54 [ReportDao.go:13] [D] Start update daily report 
+2015/06/28 16:58:04 [ReportDao.go:13] [D] Start update daily report 
+2015/06/28 16:58:14 [ReportDao.go:13] [D] Start update daily report 
+2015/06/28 16:58:24 [ReportDao.go:13] [D] Start update daily report 
+2015/06/28 16:58:34 [ReportDao.go:13] [D] Start update daily report 
+2015/06/28 16:58:44 [ReportDao.go:13] [D] Start update daily report 
+2015/06/28 16:58:54 [ReportDao.go:13] [D] Start update daily report 
+2015/06/28 16:59:04 [ReportDao.go:13] [D] Start update daily report 
+2015/06/28 16:59:14 [ReportDao.go:13] [D] Start update daily report 
+2015/06/28 16:59:24 [ReportDao.go:13] [D] Start update daily report 
+2015/06/28 16:59:34 [ReportDao.go:13] [D] Start update daily report 
+2015/06/28 16:59:45 [ReportDao.go:74] [D] Start update demand daily report 
+2015/06/28 16:59:55 [ReportDao.go:74] [D] Start update demand daily report 
+2015/06/28 17:00:05 [ReportDao.go:74] [D] Start update demand daily report 
+2015/06/28 17:00:15 [ReportDao.go:74] [D] Start update demand daily report 
+2015/06/28 17:00:25 [ReportDao.go:74] [D] Start update demand daily report 
+2015/06/28 17:00:35 [ReportDao.go:74] [D] Start update demand daily report 
+2015/06/28 17:00:45 [ReportDao.go:74] [D] Start update demand daily report 
+2015/06/28 17:00:55 [ReportDao.go:74] [D] Start update demand daily report 
+2015/06/28 17:06:05 [ReportDao.go:13] [D] Start update daily report 
+2015/06/28 17:06:05 [ReportDao.go:74] [D] Start update demand daily report 

@@ -18,6 +18,7 @@ type PmpRequestLog struct {
 	Ip           string `orm:"column(ip);size(20);null"`
 	ProvinceCode string `orm:"column(province_code);size(45);null"`
 	CityCode     string `orm:"column(city_code);size(45);null"`
+	Ua           string `orm:"column();size(255);null"`
 }
 
 func init() {

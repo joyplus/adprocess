@@ -111,6 +111,9 @@ func dealRequestLog(b []byte) {
 		beego.Error(err.Error())
 	} else {
 		adpm.AddPmpRequestLog(getRequestLog(&adRequest))
+		if err != nil {
+			beego.Error(err.Error())
+		}
 	}
 
 }
@@ -121,7 +124,10 @@ func dealTrackingLog(b []byte, logType int) {
 	if err != nil {
 		beego.Error(err.Error())
 	} else {
-		adpm.AddPmpTrackingLog(getTrackingLog(&adRequest, logType))
+		err := adpm.AddPmpTrackingLog(getTrackingLog(&adRequest, logType))
+		if err != nil {
+			beego.Error(err.Error())
+		}
 	}
 
 }
@@ -141,6 +147,7 @@ func getRequestLog(adRequest *adxm.AdRequest) *adpm.PmpRequestLog {
 	requestLog.IdType = idType
 	requestLog.Uid = uid
 	requestLog.Ip = adRequest.Ip
+	requestLog.Ua = adRequest.Ua
 
 	provinceCode, cityCode := tools.QueryIP(adRequest.Ip)
 	requestLog.ProvinceCode = provinceCode
@@ -164,6 +171,7 @@ func getTrackingLog(adRequest *adxm.AdRequest, logType int) *adpm.PmpTrackingLog
 	trackingLog.IdType = idType
 	trackingLog.Uid = uid
 	trackingLog.Ip = adRequest.Ip
+	trackingLog.Ua = adRequest.Ua
 
 	provinceCode, cityCode := tools.QueryIP(adRequest.Ip)
 	trackingLog.ProvinceCode = provinceCode

@@ -7,6 +7,13 @@ import (
 	"github.com/garyburd/redigo/redis"
 )
 
+func AddDemandLog(m *PmpDemandResponseLog) (err error) {
+
+	o := orm.NewOrm()
+	_, err = o.Insert(m)
+	return err
+}
+
 func AddPmpTrackingLog(m *PmpTrackingLog) (err error) {
 
 	o := orm.NewOrm()

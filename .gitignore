@@ -26,3 +26,9 @@ _testmain.go
 adprocess
 
 adprocess
+
+*.log
+
+/logs
+
+*.log

@@ -19,6 +19,7 @@ type PmpTrackingLog struct {
 	CityCode        string `orm:"column(city_code);size(45);null"`
 	PmpAdspaceId    int    `orm:"column(pmp_adspace_id);null"`
 	DemandAdspaceId int    `orm:"column(demand_adspace_id);null"`
+	Ua              string `orm:"column();size(255);null"`
 }
 
 func init() {
