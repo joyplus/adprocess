@@ -14,7 +14,7 @@ func HandleDemandLog() {
 
 	c := lib.Pool.Get()
 	for {
-		reply, err := c.Do("brpop", "ADMUX_DEMAND", "0")
+		reply, err := c.Do("brpop", beego.AppConfig.String("runmode")+"_ADMUX_DEMAND", "0")
 
 		if err != nil {
 			beego.Error(err.Error())

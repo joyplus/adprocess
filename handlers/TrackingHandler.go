@@ -15,7 +15,7 @@ func HandleReq() {
 
 	c := lib.Pool.Get()
 	for {
-		reply, err := c.Do("brpop", "ADMUX_REQ", "0")
+		reply, err := c.Do("brpop", beego.AppConfig.String("runmode")+"_ADMUX_REQ", "0")
 
 		if err != nil {
 			beego.Error(err.Error())
@@ -46,7 +46,7 @@ func HandleImp() {
 
 	c := lib.Pool.Get()
 	for {
-		reply, err := c.Do("brpop", "ADMUX_IMP", "0")
+		reply, err := c.Do("brpop", beego.AppConfig.String("runmode")+"_ADMUX_IMP", "0")
 
 		if err != nil {
 			beego.Error(err.Error())
@@ -77,7 +77,7 @@ func HandleClk() {
 
 	c := lib.Pool.Get()
 	for {
-		reply, err := c.Do("brpop", "ADMUX_CLK", "0")
+		reply, err := c.Do("brpop", beego.AppConfig.String("runmode")+"_ADMUX_CLK", "0")
 
 		if err != nil {
 			beego.Error(err.Error())
