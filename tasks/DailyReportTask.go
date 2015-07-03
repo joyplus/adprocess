@@ -53,3 +53,21 @@ func executeLastDayTask() {
 	adpm.UpdateDailyReport(strLastDay)
 	adpm.UpdateDemandDailyReport(strLastDay)
 }
+
+func DailyTaskInit() {
+
+	go func() {
+		for {
+			adpm.ProcessPartition("pmp", "pmp_tracking_log")
+
+			now := time.Now()
+
+			// 计算下一个1点
+			next := now.Add(time.Hour * 24)
+			next = time.Date(next.Year(), next.Month(), next.Day(), 0, 1, 0, 0, next.Location())
+
+			t := time.NewTimer(next.Sub(now))
+			<-t.C
+		}
+	}()
+}

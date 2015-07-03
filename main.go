@@ -58,6 +58,7 @@ func main() {
 	go tasks.DailyDemandReportInit(1)
 	go tasks.DailyReportInit(1)
 	go tasks.LastDayReportInit()
+	go tasks.DailyTaskInit()
 
 	w.Wait()
 }
