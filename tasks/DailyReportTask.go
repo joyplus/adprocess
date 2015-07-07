@@ -4,12 +4,14 @@ import (
 	//"adexchange/engine"
 	//m "adexchange/models"
 	adpm "adprocess/models"
-	//"github.com/astaxie/beego"
+	"github.com/astaxie/beego"
 	"time"
 )
 
 func DailyReportInit(minutes int) {
 	timer := time.NewTicker(time.Minute * time.Duration(minutes))
+	adpm.UpdateDailyReport(time.Now().Format("2006-01-02"))
+
 	for {
 		select {
 		case <-timer.C:
@@ -55,10 +57,12 @@ func executeLastDayTask() {
 }
 
 func DailyTaskInit() {
-
+	dbName := beego.AppConfig.String("db_name")
 	go func() {
 		for {
-			adpm.ProcessPartition("pmp", "pmp_tracking_log")
+			adpm.ProcessPartition(dbName, "pmp_tracking_log", false)
+			adpm.ProcessPartition(dbName, "pmp_request_log", true)
+			adpm.ProcessPartition(dbName, "pmp_demand_response_log", true)
 
 			now := time.Now()
 

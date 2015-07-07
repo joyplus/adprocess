@@ -45,6 +45,9 @@ func main() {
 	beego.Debug("Start adprocess")
 	beego.SetLogger("file", `{"filename":"logs/adprocess.log"}`)
 	beego.SetLogFuncCall(true)
+	logLevel, _ := beego.AppConfig.Int("log_level")
+	beego.SetLevel(logLevel)
+
 	orm.Debug, _ = beego.AppConfig.Bool("orm_debug")
 
 	lib.Pool = lib.NewPool(beego.AppConfig.String("redis_server"), "")
@@ -55,8 +58,9 @@ func main() {
 	go handlers.HandleImp()
 	go handlers.HandleClk()
 	go handlers.HandleDemandLog()
-	go tasks.DailyDemandReportInit(1)
-	go tasks.DailyReportInit(1)
+	dailyReportDuration, _ := beego.AppConfig.Int("daily_report_duration")
+	go tasks.DailyDemandReportInit(dailyReportDuration)
+	go tasks.DailyReportInit(dailyReportDuration)
 	go tasks.LastDayReportInit()
 	go tasks.DailyTaskInit()
 
