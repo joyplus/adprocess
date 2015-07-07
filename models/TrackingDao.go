@@ -92,6 +92,7 @@ func GetCachedId(key string) (id int) {
 	id, err := redis.Int(c.Do("get", prefix+key))
 
 	if err != nil {
+		beego.Error("redis key:" + key)
 		beego.Error(err.Error())
 	}
 	return

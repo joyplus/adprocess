@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-func ProcessPartition(schemaName, tableName string) (err error) {
+func ProcessPartition(schemaName, tableName string, delFlg bool) (err error) {
 
 	o := orm.NewOrm()
 
@@ -23,8 +23,13 @@ func ProcessPartition(schemaName, tableName string) (err error) {
 
 	if err != nil {
 		beego.Critical(err.Error())
-		return err
+		return
 	}
+	if list == nil {
+		beego.Info("No Partition for table :" + tableName)
+		return
+	}
+
 	strFirst := fmt.Sprintf("%v", list[0])
 	strLast := fmt.Sprintf("%v", list[len(list)-1])
 
@@ -34,13 +39,15 @@ func ProcessPartition(schemaName, tableName string) (err error) {
 	beforeDuration := time.Now().Sub(first)
 	afterDuration := last.Sub(time.Now())
 
-	if beforeDuration.Hours() > 360.0 {
-		deleteSql := "ALTER TABLE " + tableName + " DROP PARTITION " + "p" + strFirst
-		_, err = o.Raw(deleteSql).Exec()
-		if err != nil {
-			beego.Critical(err.Error())
-		} else {
-			beego.Info("Drop Table Partition:" + tableName + ":" + "p" + strFirst)
+	if delFlg {
+		if beforeDuration.Hours() > 360.0 {
+			deleteSql := "ALTER TABLE " + tableName + " DROP PARTITION " + "p" + strFirst
+			_, err = o.Raw(deleteSql).Exec()
+			if err != nil {
+				beego.Critical(err.Error())
+			} else {
+				beego.Info("Drop Table Partition:" + tableName + ":" + "p" + strFirst)
+			}
 		}
 	}
 
