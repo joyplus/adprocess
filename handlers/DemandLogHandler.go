@@ -62,6 +62,7 @@ func getDemandResponseLog(adResponse *adxm.AdResponse) *adpm.PmpDemandResponseLo
 	demandResponseLog.Bid = adResponse.Bid
 	demandResponseLog.ResponseCode = adResponse.StatusCode
 	demandResponseLog.DemandAdspaceId = adpm.GetDemandAdspaceId(adResponse.GetDemandAdspaceKey())
+	demandResponseLog.ResponseBody = adResponse.ResBody
 
 	return demandResponseLog
 }
