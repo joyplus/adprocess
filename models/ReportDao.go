@@ -186,3 +186,67 @@ func UpdateAllocationDetail(allocation *PmpDailyAllocation) {
 	}
 
 }
+
+//adDate: 2006-01-02
+func UpdateRequestDailyReport(adDate string) (err error) {
+	o := orm.NewOrm()
+
+	beego.Info("Start update request daily report")
+
+	var records []*PmpDailyRequestReport
+	sql := "select distinct matrix.pmp_adspace_id from pmp_adspace_matrix as matrix inner join pmp_daily_allocation allocation on matrix.demand_adspace_id=allocation.demand_adspace_id and allocation.ad_date=? "
+
+	paramList := []interface{}{adDate}
+
+	_, err = o.Raw(sql, paramList).QueryRows(&records)
+
+	if err != nil {
+		return err
+	}
+
+	sql = "select count(case when status_code=200 then 1 else null end) as req_success, count(case when status_code=405 then 1 else null end) as req_noad,count(case when status_code not in(200,405) then 1 else null end) as req_error from pmp_request_log where ad_date=? and pmp_adspace_id=? "
+
+	for _, record := range records {
+		var dailyReport PmpDailyRequestReport
+		var requestLogData PmpDailyRequestReport
+		paramList = []interface{}{adDate, record.PmpAdspaceId}
+		err = o.Raw(sql, paramList).QueryRow(&requestLogData)
+
+		if err != nil {
+			beego.Critical(err.Error())
+			continue
+		}
+
+		dailyReport = PmpDailyRequestReport{AdDate: adDate}
+		dailyReport.PmpAdspaceId = record.PmpAdspaceId
+
+		err = o.Read(&dailyReport, "AdDate", "PmpAdspaceId")
+
+		if err == orm.ErrNoRows {
+			//Tracking data
+			dailyReport.ReqSuccess = requestLogData.ReqSuccess
+			dailyReport.ReqNoad = requestLogData.ReqNoad
+			dailyReport.ReqError = requestLogData.ReqError
+
+			dailyReport.FillRate = lib.DivisionInt(dailyReport.ReqSuccess, dailyReport.ReqSuccess+dailyReport.ReqNoad+dailyReport.ReqError)
+
+			_, err = o.Insert(&dailyReport)
+		} else if err == nil {
+			//Tracking data
+			dailyReport.ReqSuccess = requestLogData.ReqSuccess
+			dailyReport.ReqNoad = requestLogData.ReqNoad
+			dailyReport.ReqError = requestLogData.ReqError
+
+			dailyReport.FillRate = lib.DivisionInt(dailyReport.ReqSuccess, dailyReport.ReqSuccess+dailyReport.ReqNoad+dailyReport.ReqError)
+
+			_, err = o.Update(&dailyReport, "ReqSuccess", "ReqNoad", "ReqError", "FillRate")
+		}
+
+		if err != nil {
+			beego.Error(err.Error())
+			continue
+		}
+	}
+
+	return err
+}

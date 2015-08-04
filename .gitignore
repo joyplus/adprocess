@@ -23,12 +23,9 @@ _testmain.go
 *.test
 *.prof
 
-adprocess
-
-adprocess
 
 *.log
 
-/logs
+logs/
 
-*.log
+adprocess
