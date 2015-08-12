@@ -66,6 +66,7 @@ func executeLastDayTask() {
 	adpm.UpdateDailyReport(strLastDay)
 	adpm.UpdateDemandDailyReport(strLastDay)
 	adpm.UpdateRequestDailyReport(strLastDay)
+	adpm.UpdatePmpAdspaceDailyData()
 }
 
 func DailyTaskInit() {

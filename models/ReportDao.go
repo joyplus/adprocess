@@ -5,6 +5,7 @@ import (
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
 	"strings"
+	"time"
 )
 
 //adDate: 2006-01-02
@@ -246,6 +247,65 @@ func UpdateRequestDailyReport(adDate string) (err error) {
 			beego.Error(err.Error())
 			continue
 		}
+	}
+
+	return err
+}
+
+//adDate: 2006-01-02
+func UpdatePmpAdspaceDailyData() (err error) {
+	o := orm.NewOrm()
+
+	beego.Info("Start update pmp adspace daily data")
+
+	now := time.Now()
+	lastDay := time.Date(now.Year(), now.Month(), now.Day()-1, 0, 0, 0, 0, now.Location())
+	strLastDay := lastDay.Format("2006-01-02")
+	last7Day := time.Date(now.Year(), now.Month(), now.Day()-8, 0, 0, 0, 0, now.Location())
+	strLast7Day := last7Day.Format("2006-01-02")
+
+	var records []*PmpDailyAllocation
+	sql := "select distinct(matrix.pmp_adspace_id) from pmp_adspace_matrix as matrix inner join pmp_daily_allocation allocation on matrix.demand_adspace_id=allocation.demand_adspace_id and allocation.ad_date>=? and ?>=allocation.ad_date order by pmp_adspace_id "
+
+	paramList := []interface{}{strLast7Day, strLastDay}
+
+	_, err = o.Raw(sql, paramList).QueryRows(&records)
+
+	if err != nil {
+		return err
+	}
+
+	sql = "select sum(imp) as imp,sum(clk) as clk  from pmp_daily_report where ad_date>=? and ?>=ad_date and pmp_adspace_id=? "
+
+	for _, record := range records {
+		var pmpAdspace PmpAdspace
+		var reportSource PmpDailyReport
+		paramList = []interface{}{strLast7Day, strLastDay, record.PmpAdspaceId}
+		err = o.Raw(sql, paramList).QueryRow(&reportSource)
+
+		if err != nil {
+			beego.Error(err.Error())
+			continue
+		}
+
+		pmpAdspace = PmpAdspace{Id: record.PmpAdspaceId}
+
+		err = o.Read(&pmpAdspace, "Id")
+
+		if err == nil {
+			//Tracking data
+			pmpAdspace.EstDailyImp = reportSource.Imp / 7
+			pmpAdspace.EstDailyClk = reportSource.Clk / 7
+			pmpAdspace.EstDailyCtr = lib.DivisionInt(pmpAdspace.EstDailyClk, pmpAdspace.EstDailyImp)
+
+			_, err = o.Update(&pmpAdspace, "EstDailyImp", "EstDailyClk", "EstDailyCtr")
+		}
+
+		if err != nil {
+			beego.Error(err.Error())
+			continue
+		}
+
 	}
 
 	return err
