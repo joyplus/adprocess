@@ -50,6 +50,11 @@ func main() {
 
 	orm.Debug, _ = beego.AppConfig.Bool("orm_debug")
 
+	consoleLogFlg, _ := beego.AppConfig.Bool("log_console_flg")
+	if !consoleLogFlg {
+		beego.BeeLogger.DelLogger("console")
+	}
+
 	lib.Pool = lib.NewPool(beego.AppConfig.String("redis_server"), "")
 	tools.Init("ip.dat")
 	m.Connect()
@@ -61,6 +66,7 @@ func main() {
 	dailyReportDuration, _ := beego.AppConfig.Int("daily_report_duration")
 	go tasks.DailyDemandReportInit(dailyReportDuration)
 	go tasks.DailyReportInit(dailyReportDuration)
+	go tasks.DailyRequestReportInit(dailyReportDuration)
 	go tasks.LastDayReportInit()
 	go tasks.DailyTaskInit()
 

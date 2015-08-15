@@ -30,9 +30,20 @@ func DailyDemandReportInit(minutes int) {
 	}
 }
 
+func DailyRequestReportInit(minutes int) {
+	timer := time.NewTicker(time.Minute * time.Duration(minutes))
+	for {
+		select {
+		case <-timer.C:
+			adpm.UpdateRequestDailyReport(time.Now().Format("2006-01-02"))
+		}
+	}
+}
+
 func LastDayReportInit() {
 	go func() {
 		for {
+			beego.Info("Execute last task")
 			executeLastDayTask()
 			now := time.Now()
 
@@ -54,6 +65,8 @@ func executeLastDayTask() {
 
 	adpm.UpdateDailyReport(strLastDay)
 	adpm.UpdateDemandDailyReport(strLastDay)
+	adpm.UpdateRequestDailyReport(strLastDay)
+	adpm.UpdatePmpAdspaceDailyData()
 }
 
 func DailyTaskInit() {
