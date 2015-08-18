@@ -150,6 +150,7 @@ func getRequestLog(adRequest *adxm.AdRequest) *adpm.PmpRequestLog {
 	requestLog.Ua = adRequest.Ua
 	requestLog.Lon = adRequest.Lon
 	requestLog.Lat = adRequest.Lat
+	requestLog.ProcessDuration = int(adRequest.ProcessDuration)
 
 	provinceCode, cityCode := tools.QueryIP(adRequest.Ip)
 	requestLog.ProvinceCode = provinceCode
