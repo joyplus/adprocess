@@ -67,6 +67,9 @@ func executeLastDayTask() {
 	adpm.UpdateDemandDailyReport(strLastDay)
 	adpm.UpdateRequestDailyReport(strLastDay)
 	adpm.UpdatePmpAdspaceDailyData()
+
+	//Remove redis MH queue keys
+	RemoveMHQueue(strLastDay)
 }
 
 func DailyTaskInit() {

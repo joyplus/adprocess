@@ -140,6 +140,7 @@ func getRequestLog(adRequest *adxm.AdRequest) *adpm.PmpRequestLog {
 
 	requestLog.AdDate = time.Unix(adRequest.RequestTime, 0).Format("2006-01-02")
 	requestLog.Bid = adRequest.Bid
+	requestLog.Did = adRequest.Did
 	requestLog.StatusCode = adRequest.StatusCode
 	requestLog.Os = adRequest.Os
 	requestLog.Pkgname = adRequest.Pkgname
@@ -167,6 +168,7 @@ func getTrackingLog(adRequest *adxm.AdRequest, logType int) *adpm.PmpTrackingLog
 	trackingLog.AdDate = time.Unix(adRequest.RequestTime, 0).Format("2006-01-02")
 
 	trackingLog.Bid = adRequest.Bid
+	trackingLog.Did = adRequest.Did
 	trackingLog.LogType = logType
 	trackingLog.Os = adRequest.Os
 	trackingLog.Pkgname = adRequest.Pkgname

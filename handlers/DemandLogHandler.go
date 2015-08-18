@@ -60,6 +60,7 @@ func getDemandResponseLog(adResponse *adxm.AdResponse) *adpm.PmpDemandResponseLo
 
 	demandResponseLog.AdDate = time.Unix(adResponse.GetResponseTime(), 0).Format("2006-01-02")
 	demandResponseLog.Bid = adResponse.Bid
+	demandResponseLog.Did = adResponse.Did
 	demandResponseLog.ResponseCode = adResponse.StatusCode
 	demandResponseLog.DemandAdspaceId = adpm.GetDemandAdspaceId(adResponse.GetDemandAdspaceKey())
 	demandResponseLog.ResponseBody = adResponse.ResBody
