@@ -10,6 +10,7 @@ type PmpRequestLog struct {
 	PmpAdspaceId    int     `orm:"column(pmp_adspace_id);null"`
 	RequestTime     string  `orm:"column(request_time);type(timestamp);null"`
 	Bid             string  `orm:"column(bid);size(50);null"`
+	Did             string  `orm:"column(did);size(50);null"`
 	Os              int     `orm:"column(os);null"`
 	IdType          int     `orm:"column(id_type);null"`
 	StatusCode      int     `orm:"column(status_code);null"`

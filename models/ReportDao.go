@@ -12,7 +12,7 @@ import (
 func UpdateDailyReport(adDate string) (err error) {
 	o := orm.NewOrm()
 
-	beego.Info("Start update daily report")
+	beego.Info("Start update daily report: " + adDate)
 
 	var records []*PmpDailyAllocation
 	sql := "select allocation.id as id,allocation.ad_date as ad_date,matrix.pmp_adspace_id,matrix.demand_adspace_id from pmp_adspace_matrix as matrix inner join pmp_daily_allocation allocation on matrix.demand_adspace_id=allocation.demand_adspace_id and allocation.ad_date=? "
@@ -78,7 +78,7 @@ func UpdateDailyReport(adDate string) (err error) {
 func UpdateDemandDailyReport(adDate string) (err error) {
 	o := orm.NewOrm()
 
-	beego.Info("Start update demand daily report")
+	beego.Info("Start update demand daily report: " + adDate)
 
 	var records []*PmpDemandDailyReport
 	sql := "select distinct matrix.demand_adspace_id from pmp_adspace_matrix as matrix inner join pmp_daily_allocation allocation on matrix.demand_adspace_id=allocation.demand_adspace_id and allocation.ad_date=? "
@@ -192,7 +192,7 @@ func UpdateAllocationDetail(allocation *PmpDailyAllocation) {
 func UpdateRequestDailyReport(adDate string) (err error) {
 	o := orm.NewOrm()
 
-	beego.Info("Start update request daily report")
+	beego.Info("Start update request daily report: " + adDate)
 
 	var records []*PmpDailyRequestReport
 	sql := "select distinct matrix.pmp_adspace_id from pmp_adspace_matrix as matrix inner join pmp_daily_allocation allocation on matrix.demand_adspace_id=allocation.demand_adspace_id and allocation.ad_date=? "

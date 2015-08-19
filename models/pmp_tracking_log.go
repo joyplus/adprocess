@@ -9,6 +9,7 @@ type PmpTrackingLog struct {
 	AdDate          string  `orm:"column(ad_date);type(date);null"`
 	RequestTime     string  `orm:"column(request_time);type(int);null"`
 	Bid             string  `orm:"column(bid);size(50);null"`
+	Did             string  `orm:"column(did);size(50);null"`
 	LogType         int     `orm:"column(log_type);null"`
 	Os              int     `orm:"column(os);null"`
 	IdType          int     `orm:"column(id_type);null"`
