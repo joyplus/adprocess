@@ -43,7 +43,7 @@ func DailyRequestReportInit(minutes int) {
 func LastDayReportInit() {
 	go func() {
 		for {
-			beego.Info("Execute last task")
+			beego.Info("Execute last day task")
 			executeLastDayTask()
 			now := time.Now()
 
@@ -62,11 +62,13 @@ func executeLastDayTask() {
 	now := time.Now()
 	lastDay := time.Date(now.Year(), now.Month(), now.Day()-1, 0, 0, 0, 0, now.Location())
 	strLastDay := lastDay.Format("2006-01-02")
+	currentDay := now.Format("2006-01-02")
 
 	adpm.UpdateDailyReport(strLastDay)
 	adpm.UpdateDemandDailyReport(strLastDay)
 	adpm.UpdateRequestDailyReport(strLastDay)
 	adpm.UpdatePmpAdspaceDailyData()
+	adpm.UpdateForeverAllocation(strLastDay, currentDay)
 
 	//Remove redis MH queue keys
 	RemoveMHQueue(strLastDay)
