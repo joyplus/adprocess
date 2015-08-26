@@ -10,7 +10,7 @@ import (
 func RemoveMHQueue(strLastDay string) {
 
 	beego.Info("Start delete mh queue for :" + beego.AppConfig.String("runmode") + "_MHQUEUE_" + strLastDay)
-	c := lib.GetQueuePool.Get()
+	c := lib.GetQueuePool().Get()
 
 	reply, err := c.Do("keys", beego.AppConfig.String("runmode")+"_MHQUEUE_"+strLastDay+"*")
 
