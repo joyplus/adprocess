@@ -13,7 +13,7 @@ import (
 
 func HandleReq() {
 
-	c := lib.Pool.Get()
+	c := lib.GetQueuePool().Get()
 	for {
 		reply, err := c.Do("brpop", beego.AppConfig.String("runmode")+"_ADMUX_REQ", "0")
 
@@ -44,7 +44,7 @@ func HandleReq() {
 
 func HandleImp() {
 
-	c := lib.Pool.Get()
+	c := lib.GetQueuePool().Get()
 	for {
 		reply, err := c.Do("brpop", beego.AppConfig.String("runmode")+"_ADMUX_IMP", "0")
 
@@ -75,7 +75,7 @@ func HandleImp() {
 
 func HandleClk() {
 
-	c := lib.Pool.Get()
+	c := lib.GetQueuePool().Get()
 	for {
 		reply, err := c.Do("brpop", beego.AppConfig.String("runmode")+"_ADMUX_CLK", "0")
 

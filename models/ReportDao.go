@@ -12,7 +12,7 @@ import (
 func UpdateDailyReport(adDate string) (err error) {
 	o := orm.NewOrm()
 
-	beego.Info("Start update daily report: " + adDate)
+	//beego.Info("Start update daily report: " + adDate)
 
 	var records []*PmpDailyAllocation
 	sql := "select allocation.id as id,allocation.ad_date as ad_date,matrix.pmp_adspace_id,matrix.demand_adspace_id from pmp_adspace_matrix as matrix inner join pmp_daily_allocation allocation on matrix.demand_adspace_id=allocation.demand_adspace_id and allocation.ad_date=? "
@@ -78,7 +78,7 @@ func UpdateDailyReport(adDate string) (err error) {
 func UpdateDemandDailyReport(adDate string) (err error) {
 	o := orm.NewOrm()
 
-	beego.Info("Start update demand daily report: " + adDate)
+	//beego.Info("Start update demand daily report: " + adDate)
 
 	var records []*PmpDemandDailyReport
 	sql := "select distinct matrix.demand_adspace_id from pmp_adspace_matrix as matrix inner join pmp_daily_allocation allocation on matrix.demand_adspace_id=allocation.demand_adspace_id and allocation.ad_date=? "
@@ -140,7 +140,7 @@ func UpdateDemandDailyReport(adDate string) (err error) {
 func UpdateAllocationDetail(allocation *PmpDailyAllocation) {
 	o := orm.NewOrm()
 
-	beego.Info("Start update allocation detail")
+	//beego.Info("Start update allocation detail")
 
 	var records []*PmpDailyAllocationDetail
 	sql := "select id,allocation_id,targeting_type,targeting_code,plan_imp,plan_clk,actual_imp,actual_clk from pmp_daily_allocation_detail where allocation_id=? "
@@ -192,7 +192,7 @@ func UpdateAllocationDetail(allocation *PmpDailyAllocation) {
 func UpdateRequestDailyReport(adDate string) (err error) {
 	o := orm.NewOrm()
 
-	beego.Info("Start update request daily report: " + adDate)
+	//beego.Info("Start update request daily report: " + adDate)
 
 	var records []*PmpDailyRequestReport
 	sql := "select distinct matrix.pmp_adspace_id from pmp_adspace_matrix as matrix inner join pmp_daily_allocation allocation on matrix.demand_adspace_id=allocation.demand_adspace_id and allocation.ad_date=? "
@@ -256,7 +256,7 @@ func UpdateRequestDailyReport(adDate string) (err error) {
 func UpdatePmpAdspaceDailyData() (err error) {
 	o := orm.NewOrm()
 
-	beego.Info("Start update pmp adspace daily data")
+	//beego.Info("Start update pmp adspace daily data")
 
 	now := time.Now()
 	lastDay := time.Date(now.Year(), now.Month(), now.Day()-1, 0, 0, 0, 0, now.Location())

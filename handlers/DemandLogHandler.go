@@ -12,7 +12,7 @@ import (
 
 func HandleDemandLog() {
 
-	c := lib.Pool.Get()
+	c := lib.GetQueuePool().Get()
 	for {
 		reply, err := c.Do("brpop", beego.AppConfig.String("runmode")+"_ADMUX_DEMAND", "0")
 
