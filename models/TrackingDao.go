@@ -75,14 +75,14 @@ func SetCachedId(key string, id int) {
 	c := lib.GetCachePool().Get()
 	prefix := beego.AppConfig.String("runmode") + "_"
 
-	if _, err := c.Do("SET", prefix+key, id); err != nil {
+	if _, err := c.Do("SET", prefix+key, id, "EX", "86400"); err != nil {
 		beego.Error(err.Error())
 	}
 
-	_, err := c.Do("EXPIRE", prefix+key, 86400)
-	if err != nil {
-		beego.Error(err.Error())
-	}
+	//_, err := c.Do("EXPIRE", prefix+key, 86400)
+	//if err != nil {
+	//	beego.Error(err.Error())
+	//}
 
 }
 
