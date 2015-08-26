@@ -87,7 +87,7 @@ func SetCachedId(key string, id int) {
 }
 
 func GetCachedId(key string) (id int) {
-	c := lib.GetCachePool.Get()
+	c := lib.GetCachePool().Get()
 	prefix := beego.AppConfig.String("runmode") + "_"
 	id, err := redis.Int(c.Do("get", prefix+key))
 
