@@ -72,7 +72,7 @@ func GetDemandAdspaceId(adspaceKey string) (id int) {
 }
 
 func SetCachedId(key string, id int) {
-	c := lib.Pool.Get()
+	c := lib.GetCachePool().Get()
 	prefix := beego.AppConfig.String("runmode") + "_"
 
 	if _, err := c.Do("SET", prefix+key, id); err != nil {
@@ -87,7 +87,7 @@ func SetCachedId(key string, id int) {
 }
 
 func GetCachedId(key string) (id int) {
-	c := lib.Pool.Get()
+	c := lib.GetCachePool.Get()
 	prefix := beego.AppConfig.String("runmode") + "_"
 	id, err := redis.Int(c.Do("get", prefix+key))
 
