@@ -23,6 +23,8 @@ type PmpTrackingLog struct {
 	Ua              string  `orm:"column();size(255);null"`
 	Lon             float32 `orm:"column(lon);null"`
 	Lat             float32 `orm:"column(lat);null"`
+	Width           int     `orm:"column(width);null"`
+	Height          int     `orm:"column(height);null"`
 }
 
 func init() {

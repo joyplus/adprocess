@@ -23,6 +23,8 @@ type PmpRequestLog struct {
 	Lon             float32 `orm:"column(lon);null"`
 	Lat             float32 `orm:"column(lat);null"`
 	ProcessDuration int     `orm:"column(process_duration);null"`
+	Width           int     `orm:"column(width);null"`
+	Height          int     `orm:"column(height);null"`
 }
 
 func init() {

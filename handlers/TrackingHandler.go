@@ -153,6 +153,9 @@ func getRequestLog(adRequest *adxm.AdRequest) *adpm.PmpRequestLog {
 	requestLog.Lat = adRequest.Lat
 	requestLog.ProcessDuration = int(adRequest.ProcessDuration)
 
+	requestLog.Width = adRequest.Width
+	requestLog.Height = adRequest.Height
+
 	provinceCode, cityCode := tools.QueryIP(adRequest.Ip)
 	requestLog.ProvinceCode = provinceCode
 	requestLog.CityCode = cityCode
@@ -179,6 +182,9 @@ func getTrackingLog(adRequest *adxm.AdRequest, logType int) *adpm.PmpTrackingLog
 	trackingLog.Ua = adRequest.Ua
 	trackingLog.Lon = adRequest.Lon
 	trackingLog.Lat = adRequest.Lat
+
+	trackingLog.Width = adRequest.Width
+	trackingLog.Height = adRequest.Height
 
 	provinceCode, cityCode := tools.QueryIP(adRequest.Ip)
 	trackingLog.ProvinceCode = provinceCode
